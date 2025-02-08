@@ -1,20 +1,26 @@
 package com.example.pdvapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pdvapp.ui.theme.ProductListScreen
 import com.example.pdvapp.ui.theme.ProductDetailScreen
 import com.example.pdvapp.ui.theme.AddProductScreen
 import com.example.pdvapp.ui.theme.CartScreen
 import com.example.pdvapp.viewmodel.SharedProductViewModel
+import com.example.pdvapp.viewmodel.CartViewModel
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    // Obtenha o SharedProductViewModel para compartilhar entre as telas
     val sharedViewModel: SharedProductViewModel = viewModel()
+    // Obtenha o CartViewModel do escopo da atividade para compartilhar a mesma instância
+    val cartViewModel: CartViewModel = viewModel(LocalContext.current as ComponentActivity)
 
     NavHost(navController = navController, startDestination = "productList") {
         composable("productList") {
@@ -24,8 +30,11 @@ fun AppNavigation() {
                     sharedViewModel.selectProduct(produto)
                     navController.navigate("productDetail")
                 },
-                sharedViewModel = sharedViewModel,
-                onNavigateToCart = { navController.navigate("cart") }  // Callback para navegar ao carrinho
+                onAddToCart = { produto ->
+                    cartViewModel.addItem(produto)
+                    navController.navigate("cart")
+                },
+                sharedViewModel = sharedViewModel
             )
         }
         composable("addProduct") {

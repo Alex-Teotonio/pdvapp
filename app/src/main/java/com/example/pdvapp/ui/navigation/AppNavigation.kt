@@ -11,15 +11,16 @@ import com.example.pdvapp.ui.theme.ProductListScreen
 import com.example.pdvapp.ui.theme.ProductDetailScreen
 import com.example.pdvapp.ui.theme.AddProductScreen
 import com.example.pdvapp.ui.theme.CartScreen
+import com.example.pdvapp.ui.theme.CheckoutScreen
 import com.example.pdvapp.viewmodel.SharedProductViewModel
 import com.example.pdvapp.viewmodel.CartViewModel
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    // Obtenha o SharedProductViewModel para compartilhar entre as telas
+    // Obtenha o SharedProductViewModel (para compartilhar o produto selecionado)
     val sharedViewModel: SharedProductViewModel = viewModel()
-    // Obtenha o CartViewModel do escopo da atividade para compartilhar a mesma instância
+    // Obtenha o CartViewModel do escopo da atividade
     val cartViewModel: CartViewModel = viewModel(LocalContext.current as ComponentActivity)
 
     NavHost(navController = navController, startDestination = "productList") {
@@ -51,7 +52,19 @@ fun AppNavigation() {
         }
         composable("cart") {
             CartScreen(
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                onNavigateToCheckout = { navController.navigate("checkout") }
+            )
+        }
+        composable("checkout") {
+            CheckoutScreen(
+                onCheckoutComplete = {
+                    // Após finalizar a compra, navegue de volta à lista
+                    navController.navigate("productList") {
+                        popUpTo("productList") { inclusive = true }
+                    }
+                },
+                onCancel = { navController.popBackStack() }
             )
         }
     }

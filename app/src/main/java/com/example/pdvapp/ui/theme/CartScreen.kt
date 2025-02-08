@@ -34,7 +34,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
+    onNavigateToCheckout: () -> Unit = {}  // Novo callback para ir ao checkout
 ) {
     val cartViewModel: CartViewModel = viewModel(LocalContext.current as ComponentActivity)
     val cartItems = cartViewModel.cartItems
@@ -93,8 +94,7 @@ fun CartScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    // Exemplo: finalizar compra
-                    cartViewModel.clearCart()
+                    onNavigateToCheckout()
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

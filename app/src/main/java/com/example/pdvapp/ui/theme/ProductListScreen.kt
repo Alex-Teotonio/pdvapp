@@ -37,7 +37,7 @@ import androidx.compose.material.icons.filled.ShoppingCart
 fun ProductListScreen(
     onNavigateToAddProduct: () -> Unit = {},
     onProductClick: (Produto) -> Unit = {},
-    onAddToCart: (Produto) -> Unit = {},   // Novo callback para adicionar ao carrinho
+    onAddToCart: (Produto) -> Unit = {},
     sharedViewModel: SharedProductViewModel
 ) {
     val produtoViewModel: ProdutoViewModel = viewModel()

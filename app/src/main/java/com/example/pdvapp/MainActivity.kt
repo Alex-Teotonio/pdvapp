@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import com.example.pdvapp.ui.theme.ProductListScreen
+import com.example.pdvapp.ui.navigation.AppNavigation
 import com.example.pdvapp.ui.theme.PdvappTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,9 +15,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PdvappTheme {
-                // Use uma Surface para aplicar o tema
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    ProductListScreen()
+                    AppNavigation()
                 }
             }
         }

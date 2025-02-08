@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("kapt")
+    kotlin("plugin.parcelize")
 }
 
 android {
@@ -72,6 +73,10 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1") // Use the latest version
     kapt("androidx.room:room-compiler:2.6.1") // Annotation processor
     implementation("androidx.room:room-ktx:2.6.1") // Kotlin extensions for Room
+
+    implementation("androidx.navigation:navigation-compose:2.6.0")
+
+    implementation("androidx.compose.material:material-icons-extended:1.4.3")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")

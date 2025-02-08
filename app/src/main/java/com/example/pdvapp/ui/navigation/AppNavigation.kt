@@ -33,6 +33,7 @@ fun AppNavigation() {
             )
         }
         composable("addProduct") {
+
             AddProductScreen(
                 onProductAdded = { navController.popBackStack() },
                 onCancel = { navController.popBackStack() }

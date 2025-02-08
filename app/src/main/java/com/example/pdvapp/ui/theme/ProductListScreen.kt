@@ -8,9 +8,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,18 +23,34 @@ import com.example.pdvapp.viewmodel.ProdutoViewModel
 import com.example.pdvapp.viewmodel.SharedProductViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.ExperimentalMaterial3Api
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListScreen(
     onNavigateToAddProduct: () -> Unit = {},
     onProductClick: (Produto) -> Unit = {},
-    sharedViewModel: SharedProductViewModel  // Novo parâmetro obrigatório
+    sharedViewModel: SharedProductViewModel,
+    onNavigateToCart: () -> Unit = {}
 ) {
     val produtoViewModel: ProdutoViewModel = viewModel()
     val produtos by produtoViewModel.produtos.observeAsState(initial = emptyList())
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = { Text("Produtos") },
+                actions = {
+                    IconButton(onClick = onNavigateToCart) {
+                        Icon(
+                            imageVector = Icons.Default.ShoppingCart,
+                            contentDescription = "Carrinho"
+                        )
+                    }
+                }
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = onNavigateToAddProduct) {
                 Icon(
@@ -41,14 +58,14 @@ fun ProductListScreen(
                     contentDescription = "Adicionar Produto"
                 )
             }
-        }
+        },
+        modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
             LazyColumn {
                 items(produtos) { produto ->
                     Text(
                         text = produto.nome,
-                        style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier
                             .padding(vertical = 8.dp)
                             .clickable {

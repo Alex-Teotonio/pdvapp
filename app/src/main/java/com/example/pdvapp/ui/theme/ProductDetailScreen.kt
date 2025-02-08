@@ -1,10 +1,6 @@
 package com.example.pdvapp.ui.theme
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -20,13 +16,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pdvapp.data.local.Produto
 import com.example.pdvapp.viewmodel.ProdutoViewModel
 import com.example.pdvapp.viewmodel.SharedProductViewModel
-
+import com.example.pdvapp.viewmodel.CartViewModel
+import androidx.compose.ui.platform.LocalContext
+import androidx.activity.ComponentActivity
 @Composable
 fun ProductDetailScreen(
-    sharedViewModel: SharedProductViewModel, // Remova o valor padrão para garantir a passagem correta
+    sharedViewModel: SharedProductViewModel,
     onBack: () -> Unit = {}
 ) {
     val produtoViewModel: ProdutoViewModel = viewModel()
+    // Obtenha o CartViewModel do escopo da atividade
+    val cartViewModel: CartViewModel = viewModel(LocalContext.current as ComponentActivity)
     val produto = sharedViewModel.selectedProduct.value
 
     if (produto == null) {
@@ -47,42 +47,9 @@ fun ProductDetailScreen(
                 label = { Text("Nome") },
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = descricao,
-                onValueChange = { descricao = it },
-                label = { Text("Descrição") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = codigoBarras,
-                onValueChange = { codigoBarras = it },
-                label = { Text("Código de Barras") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = precoStr,
-                onValueChange = { precoStr = it },
-                label = { Text("Preço") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = categoria,
-                onValueChange = { categoria = it },
-                label = { Text("Categoria") },
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = quantidadeStr,
-                onValueChange = { quantidadeStr = it },
-                label = { Text("Quantidade em Estoque") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            // ... outros campos de edição ...
             Spacer(modifier = Modifier.height(16.dp))
+            // Botão para atualizar
             Button(
                 onClick = {
                     val preco = precoStr.toDoubleOrNull() ?: 0.0
@@ -105,6 +72,7 @@ fun ProductDetailScreen(
                 Text("Atualizar Produto")
             }
             Spacer(modifier = Modifier.height(8.dp))
+            // Botão para excluir
             Button(
                 onClick = {
                     produtoViewModel.excluir(produto)
@@ -113,6 +81,16 @@ fun ProductDetailScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Excluir Produto")
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            // Botão para adicionar ao carrinho
+            Button(
+                onClick = {
+                    cartViewModel.addItem(produto)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Adicionar ao Carrinho")
             }
         }
     }

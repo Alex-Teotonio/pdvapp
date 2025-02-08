@@ -8,32 +8,28 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pdvapp.ui.theme.ProductListScreen
 import com.example.pdvapp.ui.theme.ProductDetailScreen
 import com.example.pdvapp.ui.theme.AddProductScreen
+import com.example.pdvapp.ui.CartScreen
 import com.example.pdvapp.viewmodel.SharedProductViewModel
-import androidx.compose.ui.platform.LocalContext
-import androidx.activity.ComponentActivity
-
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    val context = LocalContext.current as ComponentActivity
-    // Obtenha o SharedProductViewModel do escopo da atividade
-    val sharedViewModel: SharedProductViewModel = viewModel(context)
+    // Obtenha o SharedProductViewModel para compartilhar entre as telas de listagem e detalhes
+    val sharedViewModel: SharedProductViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "productList") {
         composable("productList") {
             ProductListScreen(
                 onNavigateToAddProduct = { navController.navigate("addProduct") },
                 onProductClick = { produto ->
-                    // Armazene o produto selecionado no sharedViewModel
                     sharedViewModel.selectProduct(produto)
                     navController.navigate("productDetail")
                 },
-                sharedViewModel = sharedViewModel // Passe a instância compartilhada
+                sharedViewModel = sharedViewModel,
+                onNavigateToCart = { navController.navigate("cart") }  // Callback para navegar ao carrinho
             )
         }
         composable("addProduct") {
-
             AddProductScreen(
                 onProductAdded = { navController.popBackStack() },
                 onCancel = { navController.popBackStack() }
@@ -42,6 +38,11 @@ fun AppNavigation() {
         composable("productDetail") {
             ProductDetailScreen(
                 sharedViewModel = sharedViewModel,
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable("cart") {
+            CartScreen(
                 onBack = { navController.popBackStack() }
             )
         }

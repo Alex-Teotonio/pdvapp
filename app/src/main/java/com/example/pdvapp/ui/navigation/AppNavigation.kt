@@ -8,13 +8,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pdvapp.ui.theme.ProductListScreen
 import com.example.pdvapp.ui.theme.ProductDetailScreen
 import com.example.pdvapp.ui.theme.AddProductScreen
-import com.example.pdvapp.ui.CartScreen
+import com.example.pdvapp.ui.theme.CartScreen
 import com.example.pdvapp.viewmodel.SharedProductViewModel
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    // Obtenha o SharedProductViewModel para compartilhar entre as telas de listagem e detalhes
     val sharedViewModel: SharedProductViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "productList") {

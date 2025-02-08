@@ -1,6 +1,9 @@
 package com.example.pdvapp.data.local
 
-data class CartItem (
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+
+data class CartItem(
     val produto: Produto,
-    var quantidade: Int = 1
+    val quantidade: MutableState<Int> = mutableStateOf(1)
 )

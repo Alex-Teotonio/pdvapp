@@ -1,23 +1,16 @@
 package com.example.pdvapp.ui.theme
 
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pdvapp.viewmodel.CartViewModel
 
@@ -38,8 +31,9 @@ fun CheckoutScreen(
     ) {
         Column {
             Text(
-                text = "Resumo da Compra",
-                style = MaterialTheme.typography.headlineMedium,
+                text = "Checkout",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
             LazyColumn(modifier = Modifier.weight(1f)) {
@@ -52,36 +46,94 @@ fun CheckoutScreen(
                     ) {
                         Text(
                             text = item.produto.nome,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
+                            fontSize = 18.sp
                         )
-                        Text(text = "Qtd: ${item.quantidade.value}")
-                        Text(text = "Subtotal: R$ ${"%.2f".format(item.produto.preco * item.quantidade.value)}")
+                        Text(
+                            text = "Qtd: ${item.quantidade.value}",
+                            fontSize = 16.sp
+                        )
+                        Text(
+                            text = "R$ ${"%.2f".format(item.produto.preco * item.quantidade.value)}",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Total: R$ ${"%.2f".format(total)}",
-                style = MaterialTheme.typography.headlineSmall
-            )
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Subtotal",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "R$ ${"%.2f".format(total)}",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Desconto",
+                        fontSize = 18.sp
+                    )
+                    Text(
+                        text = "R$ 0.00",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Total",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "R$ ${"%.2f".format(total)}",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
         Column(modifier = Modifier.fillMaxWidth()) {
             Button(
                 onClick = {
-                    // Simula o checkout: você pode integrar com um sistema de pagamento aqui
                     cartViewModel.clearCart()
-                    onCheckoutComplete() // Callback para notificar que o checkout foi concluído
+                    onCheckoutComplete()
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text("Finalizar Compra")
+                Text(
+                    text = "Finalizar Compra",
+                    fontSize = 18.sp
+                )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = onCancel,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
             ) {
-                Text("Cancelar")
+                Text(
+                    text = "Cancelar",
+                    fontSize = 18.sp
+                )
             }
         }
     }

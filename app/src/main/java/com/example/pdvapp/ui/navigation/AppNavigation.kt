@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pdvapp.ui.theme.ProductListScreen
 import com.example.pdvapp.ui.theme.ProductDetailScreen
 import com.example.pdvapp.ui.theme.AddProductScreen
+import com.example.pdvapp.ui.theme.HomeScreen
 import com.example.pdvapp.ui.theme.CartScreen
 import com.example.pdvapp.ui.theme.CheckoutScreen
 import com.example.pdvapp.viewmodel.SharedProductViewModel
@@ -23,7 +24,13 @@ fun AppNavigation() {
     // Obtenha o CartViewModel do escopo da atividade
     val cartViewModel: CartViewModel = viewModel(LocalContext.current as ComponentActivity)
 
-    NavHost(navController = navController, startDestination = "productList") {
+    NavHost(navController = navController, startDestination = "home") {
+        composable("home") {
+            HomeScreen(
+                onProductsClick = { navController.navigate("productList") },
+                onTicketsClick = { navController.navigate("ticketFlow") } // Supondo um fluxo de ingressos
+            )
+        }
         composable("productList") {
             ProductListScreen(
                 onNavigateToAddProduct = { navController.navigate("addProduct") },
